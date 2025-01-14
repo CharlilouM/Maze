@@ -2,17 +2,18 @@
 #define MAZE_PRINT_H
 
 
-#define WIDTH 40
-#define HEIGHT 35
+#define WIDTH 100
+#define HEIGHT 100
 
 extern int endX;
 extern int endY;
-
+extern int pathLength ;
 typedef struct Cell {
     int i, j;          // Position de la cellule
     int N, S, E, W;    // Murs : 1 = mur, 0 = pas de mur
     Color color;       // Couleur pour l'affichage
     int visited;       // Indique si la cellule a été visitée
+     struct Cell *parent; // Pointeur vers la cellule parente
 } Cell;
 
 
@@ -38,6 +39,8 @@ void GenerateMaze(int x, int y);
 void DrawMaze(int cellSize, int offset);
 void resetCell();
 void newEnd();
+
+
 
 
 #endif

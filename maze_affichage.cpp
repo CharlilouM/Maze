@@ -9,16 +9,19 @@ int startY=0;
 int endX=0;
 int endY=0;
 
+int pathLength=0 ;
 int wall=2;
+const int offset = 20;
 const int screenWidth = 1920*0.75;
 const int screenHeight = 1080*0.75;
-const int cellSize = 15;
-const int offset = 20;
+const int cellSize =(screenHeight-2*offset)/HEIGHT ;
+
 Cell Maze[WIDTH][HEIGHT];
 
 clock_t start, end;
 double cpu_time_used;
 char timeText[50];
+char pathLengthText[50];
 
 // Fonction pour initialiser le labyrinthe
 void InitMaze() {
@@ -118,24 +121,28 @@ int SolveMazeDFS(int x, int y, int endX, int endY) {
     if (Maze[x][y].N == 0 && !Maze[x][y - 1].visited) { // Nord
         if (SolveMazeDFS(x, y - 1, endX, endY)) {
             Maze[x][y].color = GREEN; // Marquer le chemin
+            pathLength++;
             return 1;
         }
     }
     if (Maze[x][y].S == 0 && !Maze[x][y + 1].visited) { // Sud
         if (SolveMazeDFS(x, y + 1, endX, endY)) {
             Maze[x][y].color = GREEN;
+            pathLength++;
             return 1;
         }
     }
     if (Maze[x][y].E == 0 && !Maze[x + 1][y].visited) { // Est
         if (SolveMazeDFS(x + 1, y, endX, endY)) {
             Maze[x][y].color = GREEN;
+            pathLength++;
             return 1;
         }
     }
     if (Maze[x][y].W == 0 && !Maze[x - 1][y].visited) { // Ouest
         if (SolveMazeDFS(x - 1, y, endX, endY)) {
             Maze[x][y].color = GREEN;
+            pathLength++;
             return 1;
         }
     }
@@ -166,6 +173,19 @@ int IsInList(Node *list[], int count, int x, int y) {
     }
     return 0;
 }
+int CalculatePathLength(Node *endNode) {
+    int length = 0;
+    Node *current = endNode;
+
+    // Parcourir le chemin en suivant les parents
+    while (current != NULL) {
+        length++;
+        current = current->parent;
+    }
+
+    return length; // Retourne la longueur totale
+}
+
 int SolveMazeAStar(int startX, int startY, int endX, int endY) {
     Node *openList[WIDTH * HEIGHT];
     Node *closedList[WIDTH * HEIGHT];
@@ -191,6 +211,7 @@ int SolveMazeAStar(int startX, int startY, int endX, int endY) {
 
         // Vérifie si on a atteint la fin
         if (current->x == endX && current->y == endY) {
+            pathLength = CalculatePathLength(current);
             // Marque le chemin en vert
             Node *path = current;
             while (path != NULL) {
@@ -238,19 +259,16 @@ int SolveMazeAStar(int startX, int startY, int endX, int endY) {
 
 void DrawTextBelowMaze() {
     int textSize = 20; // Taille du texte
-    
-    // Calculer la position Y pour placer le texte juste en dessous du labyrinthe
-    int textY = HEIGHT * cellSize + 20; // 10 pixels de marge sous le labyrinthe
-
-    int textX = offset;
+    int textY = offset; 
+    int textX = WIDTH * cellSize + 20+offset;
 
     // Dessiner le texte
     DrawText("C : clear", textX, textY, textSize, BLACK);
     DrawText("R : Refresh end", textX, textY+20, textSize, BLACK);
-    DrawText("1 : BFS", textX, textY+40, textSize, BLACK);
+    DrawText("1 : DFS", textX, textY+40, textSize, BLACK);
     DrawText("2 : A*", textX, textY+60, textSize, BLACK);
     DrawText(timeText, textX, textY+80, textSize, BLACK);
-
+    DrawText( pathLengthText, textX, textY+100, textSize, BLACK);
 }
 void newEnd(){
     Maze[endX][endY].color=WHITE;
@@ -286,6 +304,7 @@ int main() {
         EndDrawing()
         ;
         if (IsKeyPressed(KEY_ONE)){
+            pathLength=1;
             start = clock();
             if (SolveMazeDFS(startX, startY, endX, endY)) {
                 printf("Solution trouvée !\n");
@@ -317,6 +336,7 @@ int main() {
 
         // Mise à jour du texte affiché
         snprintf(timeText, sizeof(timeText), "Time: %.5f seconds", cpu_time_used);
+        snprintf(pathLengthText, sizeof(pathLengthText), "Longueur du chemin %d", pathLength);
 
 
     }
