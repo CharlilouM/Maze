@@ -9,6 +9,7 @@ int startY=0;
 int endX=0;
 int endY=0;
 bool mouvement=false;
+PathList* pathList = NULL;
 int pathLength=0 ;
 int wall=2;
 const int offset = 20;
@@ -241,18 +242,38 @@ int IsInList(Node *list[], int count, int x, int y) {
     }
     return 0;
 }
-int CalculatePathLength(Node *endNode) {
+// Fonction pour ajouter une coordonnée à la liste du chemin
+void AddToPathList(PathList** pathList, int x, int y) {
+    // Crée un nouveau nœud pour la liste
+    PathList* newNode = (PathList*)malloc(sizeof(PathList));
+    newNode->x = x;
+    newNode->y = y;
+    newNode->next = *pathList;  // Le nouveau nœud pointe vers l'ancien début de liste
+    *pathList = newNode;        // Le pointeur de la liste pointe maintenant vers ce nouveau nœud
+}
+// Fonction pour afficher le chemin parcouru
+void PrintPath(PathList* pathList) {
+    while (pathList != NULL) {
+        printf("(%d, %d) -> ", pathList->x, pathList->y);
+        pathList = pathList->next;
+    }
+    printf("End\n");
+}
+int CalculatePathLength(Node* endNode, PathList** pathList) {
     int length = 0;
-    Node *current = endNode;
+    Node* current = endNode;
 
-    // Parcourir le chemin en suivant les parents
+    // Parcourir le chemin en suivant les parents et ajouter les coordonnées à la liste
     while (current != NULL) {
+        AddToPathList(pathList, current->x, current->y);  // Ajouter les coordonnées du nœud
         length++;
         current = current->parent;
     }
-
-    return length; // Retourne la longueur totale
+    // Afficher le chemin une fois qu'il est construit
+    PrintPath(*pathList);
+    return length;  // Retourner la longueur totale du chemin
 }
+
 
 int SolveMazeAStar(int startX, int startY, int endX, int endY) {
     Node *openList[WIDTH * HEIGHT];
@@ -279,7 +300,7 @@ int SolveMazeAStar(int startX, int startY, int endX, int endY) {
 
         // Vérifie si on a atteint la fin
         if (current->x == endX && current->y == endY) {
-            pathLength = CalculatePathLength(current);
+            pathLength = CalculatePathLength(current, &pathList);
             // Marque le chemin en vert
             Node *path = current;
             while (path != NULL) {

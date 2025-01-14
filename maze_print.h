@@ -2,8 +2,8 @@
 #define MAZE_PRINT_H
 
 
-#define WIDTH 40
-#define HEIGHT 40
+#define WIDTH 20
+#define HEIGHT 20
 
 extern int endX;
 extern int endY;
@@ -30,7 +30,9 @@ typedef struct PathList {
     int x, y;
     struct PathList* next;
 } PathList;
-
+void AddToPathList(PathList** pathList, int x, int y);
+void PrintPath(PathList* pathList);
+int CalculatePathLength(Node* endNode, PathList** pathList);
 // Directions pour le déplacement : Haut, Droite, Bas, Gauche
 int directions[4][2] = {
     {0, -1}, // Nord
