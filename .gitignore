@@ -1,0 +1,7 @@
+# Fichiers compilés
+*.o
+*.exe
+*.out
+
+# Répertoires de compilation
+/build/
