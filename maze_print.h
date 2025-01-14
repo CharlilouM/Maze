@@ -2,8 +2,8 @@
 #define MAZE_PRINT_H
 
 
-#define WIDTH 100
-#define HEIGHT 100
+#define WIDTH 40
+#define HEIGHT 40
 
 extern int endX;
 extern int endY;
@@ -25,6 +25,11 @@ typedef struct Node {
     struct Node *parent; // Parent pour reconstruire le chemin
 } Node;
 
+// Structure pour une liste dynamique de coordonnées
+typedef struct PathList {
+    int x, y;
+    struct PathList* next;
+} PathList;
 
 // Directions pour le déplacement : Haut, Droite, Bas, Gauche
 int directions[4][2] = {

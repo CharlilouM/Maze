@@ -8,7 +8,7 @@ int startX=0;
 int startY=0;
 int endX=0;
 int endY=0;
-
+bool mouvement=false;
 int pathLength=0 ;
 int wall=2;
 const int offset = 20;
@@ -85,7 +85,7 @@ void resetCell(){
                     }
     }
     
-    Maze[startX][startY].color = BLUE; // Départ
+    Maze[startX][startY].color = GREEN; // Départ
     Maze[endX][endY].color = RED;     // Arrivée
 }
 // Fonction pour dessiner le labyrinthe
@@ -109,7 +109,7 @@ void DrawMaze(int cellSize, int offset) {
 int SolveMazeDFS(int x, int y, int endX, int endY) {
     // Vérifie si nous avons atteint la cellule d'arrivée
     if (x == endX && y == endY) {
-        //Maze[x][y].color = GREEN; // Colorie le chemin trouvé
+        //Maze[x][y].color = BLUE; // Colorie le chemin trouvé
         return 1; // Solution trouvée
     }
 
@@ -120,28 +120,28 @@ int SolveMazeDFS(int x, int y, int endX, int endY) {
     // Explorer les directions : Nord, Sud, Est, Ouest
     if (Maze[x][y].N == 0 && !Maze[x][y - 1].visited) { // Nord
         if (SolveMazeDFS(x, y - 1, endX, endY)) {
-            Maze[x][y].color = GREEN; // Marquer le chemin
+            Maze[x][y].color = BLUE; // Marquer le chemin
             pathLength++;
             return 1;
         }
     }
     if (Maze[x][y].S == 0 && !Maze[x][y + 1].visited) { // Sud
         if (SolveMazeDFS(x, y + 1, endX, endY)) {
-            Maze[x][y].color = GREEN;
+            Maze[x][y].color = BLUE;
             pathLength++;
             return 1;
         }
     }
     if (Maze[x][y].E == 0 && !Maze[x + 1][y].visited) { // Est
         if (SolveMazeDFS(x + 1, y, endX, endY)) {
-            Maze[x][y].color = GREEN;
+            Maze[x][y].color = BLUE;
             pathLength++;
             return 1;
         }
     }
     if (Maze[x][y].W == 0 && !Maze[x - 1][y].visited) { // Ouest
         if (SolveMazeDFS(x - 1, y, endX, endY)) {
-            Maze[x][y].color = GREEN;
+            Maze[x][y].color = BLUE;
             pathLength++;
             return 1;
         }
@@ -151,7 +151,75 @@ int SolveMazeDFS(int x, int y, int endX, int endY) {
     Maze[x][y].color = GRAY; // Marque comme "cul-de-sac"
     return 0;
 }
+typedef struct Queue {
+    int x, y;
+    struct Queue *next;
+} Queue;
 
+void enqueue(Queue **queue, int x, int y) {
+    Queue *newNode = (Queue *)malloc(sizeof(Queue));
+    newNode->x = x;
+    newNode->y = y;
+    newNode->next = NULL;
+    
+    if (*queue == NULL) {
+        *queue = newNode;
+    } else {
+        Queue *temp = *queue;
+        while (temp->next) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+Queue* dequeue(Queue **queue) {
+    if (*queue == NULL) return NULL;
+
+    Queue *temp = *queue;
+    *queue = (*queue)->next;
+    return temp;
+}
+
+int SolveMazeBFS(int startX, int startY, int endX, int endY) {
+    Queue *queue = NULL;
+    enqueue(&queue, startX, startY);
+    Maze[startX][startY].visited = 1;
+    Maze[startX][startY].color = BLUE;
+
+    int directions[4][2] = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+    while (queue) {
+        Queue *current = dequeue(&queue);
+        int x = current->x;
+        int y = current->y;
+        free(current);
+
+        if (x == endX && y == endY) {
+            // Reconstruct the path
+            pathLength = 0;
+            while (Maze[x][y].parent != NULL) {
+                Maze[x][y].color = BLUE;
+                x = Maze[x][y].parent->i;
+                y = Maze[x][y].parent->j;
+                pathLength++;
+            }
+            Maze[x][y].color = BLUE;
+            return 1;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int nx = x + directions[i][0];
+            int ny = y + directions[i][1];
+            if (nx >= 0 && nx < WIDTH && ny >= 0 && ny < HEIGHT && !Maze[nx][ny].visited && 
+                (Maze[x][y].N == 0 || Maze[x][y].E == 0 || Maze[x][y].S == 0 || Maze[x][y].W == 0)) {
+                Maze[nx][ny].visited = 1;
+                Maze[nx][ny].parent = &Maze[x][y];
+                enqueue(&queue, nx, ny);
+            }
+        }
+    }
+    return 0; // Pas de solution
+}
 int Heuristic(int x1, int y1, int x2, int y2) {
     return abs(x1 - x2) + abs(y1 - y2);
 }
@@ -215,7 +283,7 @@ int SolveMazeAStar(int startX, int startY, int endX, int endY) {
             // Marque le chemin en vert
             Node *path = current;
             while (path != NULL) {
-                Maze[path->x][path->y].color = GREEN;
+                Maze[path->x][path->y].color = BLUE;
                 path = path->parent;
             }
             Maze[current->x][current->y].color=RED;
@@ -263,18 +331,23 @@ void DrawTextBelowMaze() {
     int textX = WIDTH * cellSize + 20+offset;
 
     // Dessiner le texte
-    DrawText("C : clear", textX, textY, textSize, BLACK);
+    DrawText("A : Active mouvement", textX, textY, textSize, BLACK);
     DrawText("R : Refresh end", textX, textY+20, textSize, BLACK);
     DrawText("1 : DFS", textX, textY+40, textSize, BLACK);
-    DrawText("2 : A*", textX, textY+60, textSize, BLACK);
-    DrawText(timeText, textX, textY+80, textSize, BLACK);
-    DrawText( pathLengthText, textX, textY+100, textSize, BLACK);
+    DrawText("2 : BFS", textX, textY+60, textSize, BLACK);
+    DrawText("3 : A*", textX, textY+80, textSize, BLACK);
+    DrawText(TextFormat("Start : %d;%d | End %d;%d",startX,startY,endX,endY), textX, textY+100, textSize, BLACK);
+    DrawText(timeText, textX, textY+120, textSize, BLACK);
+    DrawText( pathLengthText, textX, textY+140, textSize, BLACK);
 }
 void newEnd(){
     Maze[endX][endY].color=WHITE;
     endX= rand() % WIDTH-1;
     endY=rand() % HEIGHT-1;
     Maze[endX][endY].color=RED;
+}
+void move(){
+    
 }
 // Programme principal
 int main() {
@@ -294,7 +367,7 @@ int main() {
     
 
     while (!WindowShouldClose()) {
-        Maze[startX][startY].color = BLUE; // Départ
+        Maze[startX][startY].color = GREEN; // Départ
         Maze[endX][endY].color = RED;     // Arrivée
         
         BeginDrawing();
@@ -304,6 +377,7 @@ int main() {
         EndDrawing()
         ;
         if (IsKeyPressed(KEY_ONE)){
+            resetCell();
             pathLength=1;
             start = clock();
             if (SolveMazeDFS(startX, startY, endX, endY)) {
@@ -317,6 +391,7 @@ int main() {
             }
            
         if (IsKeyPressed(KEY_TWO)){
+            resetCell();
             start = clock();
             if (SolveMazeAStar(startX, startY, endX, endY)) {
                 printf("Solution trouvée !\n");
@@ -326,8 +401,24 @@ int main() {
             end = clock();
             cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
             }
+        if (IsKeyPressed(KEY_THREE)){
+            resetCell();
+            start = clock();
+            if (SolveMazeAStar(startX, startY, endX, endY)) {
+                printf("Solution trouvée !\n");
+            } else {
+                printf("Aucune solution n'existe !\n");
+            }
+            end = clock();
+            cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+            } 
+         if (IsKeyPressed(KEY_A)){
+            mouvement!=mouvement;
+            if (mouvement){
+                move();
+            }
+         }
             
-         if (IsKeyPressed(KEY_C)) resetCell();
 
          if(IsKeyPressed(KEY_R)){
             newEnd();
