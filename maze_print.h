@@ -1,13 +1,27 @@
 #ifndef MAZE_PRINT_H
 #define MAZE_PRINT_H
-
+#include "raylib.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define WIDTH 20
 #define HEIGHT 20
 
+extern const int screenWidth;
+extern const int screenHeight;
+extern int startX;
+extern int startY;
 extern int endX;
 extern int endY;
-extern int pathLength ;
+extern bool mouvement;
+extern int pathLength;
+extern int wall;
+extern const int offset;
+extern const int cellSize ;
+extern char timeText[50];
+extern char pathLengthText[50];
+
 typedef struct Cell {
     int i, j;          // Position de la cellule
     int N, S, E, W;    // Murs : 1 = mur, 0 = pas de mur
@@ -16,36 +30,17 @@ typedef struct Cell {
      struct Cell *parent; // Pointeur vers la cellule parente
 } Cell;
 
+extern Cell Maze[WIDTH][HEIGHT];
 
-typedef struct Node {
-    int x, y;            // Position
-    int gCost;           // Coût depuis le départ
-    int hCost;           // Estimation du coût restant
-    int fCost;           // Coût total (g + h)
-    struct Node *parent; // Parent pour reconstruire le chemin
-} Node;
 
-// Structure pour une liste dynamique de coordonnées
-typedef struct PathList {
-    int x, y;
-    struct PathList* next;
-} PathList;
-void AddToPathList(PathList** pathList, int x, int y);
-void PrintPath(PathList* pathList);
-int CalculatePathLength(Node* endNode, PathList** pathList);
-// Directions pour le déplacement : Haut, Droite, Bas, Gauche
-int directions[4][2] = {
-    {0, -1}, // Nord
-    {1, 0},  // Est
-    {0, 1},  // Sud
-    {-1, 0}  // Ouest
-};
+extern int directions[4][2];
 void InitMaze();
 void ShuffleDirections(int dir[4][2]);
 void GenerateMaze(int x, int y);
 void DrawMaze(int cellSize, int offset);
 void resetCell();
 void newEnd();
+void DrawTextBelowMaze();
 
 
 

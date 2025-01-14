@@ -18,7 +18,7 @@ endif
 OUTPUT = simu
 
 # Liste des fichiers objets
-OBJS = maze_affichage.o
+OBJS = maze_print.o  maze_solve.o main.o
 
 # Compilation des fichiers objets
 %.o: %.cpp
