@@ -8,7 +8,7 @@ int startX = 0;
 int startY = 0;
 int endX = 0;
 int endY = 0;
-bool mouvement = false;
+
 int pathLength = 0;
 int wall = 2;
 const int offset = 20;
@@ -114,7 +114,7 @@ void DrawTextBelowMaze() {
     int textX = WIDTH * cellSize + 20+offset;
 
     // Dessiner le texte
-    DrawText("A : Active mouvement", textX, textY, textSize, BLACK);
+    DrawText("E : Enable movement of 2", textX, textY, textSize, BLACK);
     DrawText("C : Clean path", textX, textY+20, textSize, BLACK);
     DrawText("R : Refresh end", textX, textY+40, textSize, BLACK);
     DrawText("1 : DFS", textX, textY+60, textSize, BLACK);
@@ -130,9 +130,7 @@ void newEnd(){
     endY=rand() % HEIGHT-1;
     Maze[endX][endY].color=RED;
 }
-void move(){
-    
-}
+
 
 void AnimPath(){
     // déplacer le carré bleu tout les X temps selon le Path

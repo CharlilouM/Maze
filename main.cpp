@@ -1,5 +1,6 @@
 #include "maze_print.h"
 #include "maze_solve.h"
+#include "maze_move.h"
 
 // Programme principal
 int main() {
@@ -70,10 +71,10 @@ int main() {
             end = clock();
             cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
             } 
-         if (IsKeyPressed(KEY_A)){
+         if (IsKeyPressed(KEY_E)){
             mouvement = !mouvement;
             if (mouvement){
-                move();
+                move();//active mouvement de la cible
             }
          }
             

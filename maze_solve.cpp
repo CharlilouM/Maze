@@ -1,5 +1,4 @@
 #include "maze_solve.h"
-#include "maze_print.h" // Inclure le fichier d'affichage
 
 
 

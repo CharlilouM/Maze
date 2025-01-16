@@ -38,7 +38,7 @@ void AddToPathList(PathList** pathList, int x, int y) ;
 void PrintPath(PathList* pathList) ;
 int CalculatePathLength(Node* endNode, PathList** pathList) ;
 int SolveMazeAStar(int startX, int startY, int endX, int endY) ;
-void move();
+
 
 
 #endif

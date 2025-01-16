@@ -14,7 +14,7 @@ extern int startX;
 extern int startY;
 extern int endX;
 extern int endY;
-extern bool mouvement;
+
 extern int pathLength;
 extern int wall;
 extern const int offset;
