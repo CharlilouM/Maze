@@ -8,6 +8,7 @@ int startX = 0;
 int startY = 0;
 int endX = 0;
 int endY = 0;
+int BombeNumber=5;
 
 int pathLength = 0;
 int wall = 2;
@@ -27,12 +28,18 @@ int directions[4][2] = {
 void InitMaze() {
     for (int i = 0; i < WIDTH; i++) {
         for (int j = 0; j < HEIGHT; j++) {
-            Maze[i][j] = (Cell){i, j, 1, 1, 1, 1, WHITE, 0}; // Tout est mur au départ
+            Maze[i][j] = (Cell){i, j, 1, 1, 1, 1,false, WHITE, 0}; // Tout est mur au départ
         }
     }
 
 }
-
+void InitBomb(){
+    for (int k=0;k<BombeNumber;k++){
+        int x= rand() % WIDTH-1;
+        int y=rand() % HEIGHT-1;
+        Maze[x][y].bombe=true;
+    }
+}
 // Mélange les directions pour introduire de l'aléatoire
 void ShuffleDirections(int dir[4][2]) {
     for (int i = 0; i < 4; i++) {
@@ -101,6 +108,9 @@ void DrawMaze(int cellSize, int offset) {
             if (cell.S) DrawRectangle(x, y + cellSize - wall, cellSize, wall, BLACK);
             if (cell.E) DrawRectangle(x + cellSize - wall, y, wall, cellSize, BLACK);
             if (cell.W) DrawRectangle(x, y, wall, cellSize, BLACK);
+            
+            if (cell.bombe) DrawCircle(x +cellSize/2,y+cellSize/2,cellSize*0.35,BLACK);
+
         }
     }
     DrawCircle(robot1.x * cellSize + offset +cellSize/2,robot1.y* cellSize + offset+cellSize/2,cellSize*0.35,robot1.color);
@@ -127,6 +137,7 @@ void DrawTextBelowMaze() {
     DrawText(TextFormat("Start : %d;%d | End %d;%d",startX,startY,endX,endY), textX, textY+120, textSize, BLACK);
     DrawText(timeText, textX, textY+140, textSize, BLACK);
     DrawText( pathLengthText, textX, textY+160, textSize, BLACK);
+    DrawText(TextFormat("Skip Bomb : %d",(bool)SkipBomb), textX, textY+180, textSize, BLACK);
 }
 void newEnd(){
     Maze[endX][endY].color=WHITE;

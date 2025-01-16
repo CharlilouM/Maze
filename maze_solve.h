@@ -5,6 +5,7 @@
 
 extern clock_t start, end;
 extern double cpu_time_used;
+extern bool SkipBomb;
 
 
 typedef struct Node {

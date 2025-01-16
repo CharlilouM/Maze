@@ -15,7 +15,7 @@ extern int startX;
 extern int startY;
 extern int endX;
 extern int endY;
-
+extern int BombeNumber;
 extern int pathLength;
 extern int wall;
 extern const int offset;
@@ -26,9 +26,10 @@ extern char pathLengthText[50];
 typedef struct Cell {
     int i, j;          // Position de la cellule
     int N, S, E, W;    // Murs : 1 = mur, 0 = pas de mur
+    int bombe;
     Color color;       // Couleur pour l'affichage
     int visited;       // Indique si la cellule a été visitée
-     struct Cell *parent; // Pointeur vers la cellule parente
+    struct Cell *parent; // Pointeur vers la cellule parente
 } Cell;
 
 extern Cell Maze[WIDTH][HEIGHT];
@@ -42,7 +43,8 @@ void DrawMaze(int cellSize, int offset);
 void resetCell(bool color);
 void newEnd();
 void DrawTextBelowMaze();
-void AnimPath();;
+
+void InitBomb();
 
 
 

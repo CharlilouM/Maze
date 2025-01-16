@@ -6,7 +6,7 @@ clock_t start, end;
 double cpu_time_used;
 char timeText[50];
 char pathLengthText[50];
-
+bool SkipBomb=true; //true = ne prend pas en compte les bombes
 PathList* pathList=NULL;
 
 
@@ -26,7 +26,8 @@ PathList* SolveMazeDFS(int x, int y, int endX, int endY,Color color) {
     // Explorer les directions : Nord, Sud, Est, Ouest
     PathList* path = NULL;
 
-    if (Maze[x][y].N == 0 && !Maze[x][y - 1].visited) { // Nord
+    if (Maze[x][y].N == 0 && !Maze[x][y - 1].visited && !Maze[x][y-1].bombe) { // Nord
+    if((SkipBomb || !Maze[x][y-1].bombe)){
         path = SolveMazeDFS(x, y - 1, endX, endY,color);
         if (path) {
             AddToPathList(&path, x, y); // Ajouter la cellule actuelle au chemin
@@ -34,7 +35,9 @@ PathList* SolveMazeDFS(int x, int y, int endX, int endY,Color color) {
             return path;
         }
     }
-    if (Maze[x][y].S == 0 && !Maze[x][y + 1].visited) { // Sud
+    }
+    if (Maze[x][y].S == 0 && !Maze[x][y + 1].visited ) { // Sud
+    if((SkipBomb || !Maze[x][y+1].bombe)){
         path = SolveMazeDFS(x, y + 1, endX, endY,color);
         if (path) {
             AddToPathList(&path, x, y);
@@ -42,7 +45,9 @@ PathList* SolveMazeDFS(int x, int y, int endX, int endY,Color color) {
             return path;
         }
     }
-    if (Maze[x][y].E == 0 && !Maze[x + 1][y].visited) { // Est
+    }
+    if (Maze[x][y].E == 0 && !Maze[x + 1][y].visited ) { // Est
+    if((SkipBomb || !Maze[x+1][y].bombe)){
         path = SolveMazeDFS(x + 1, y, endX, endY,color);
         if (path) {
             AddToPathList(&path, x, y);
@@ -50,13 +55,15 @@ PathList* SolveMazeDFS(int x, int y, int endX, int endY,Color color) {
             return path;
         }
     }
-    if (Maze[x][y].W == 0 && !Maze[x - 1][y].visited) { // Ouest
+    }
+    if (Maze[x][y].W == 0 && !Maze[x - 1][y].visited ) { // Ouest
+        if((SkipBomb || !Maze[x-1][y].bombe)){
         path = SolveMazeDFS(x - 1, y, endX, endY,color);
         if (path) {
             AddToPathList(&path, x, y);
             Maze[x][y].color = color;
             return path;
-        }
+        }}
     }
 
     // Si aucune direction n'aboutit, on revient en arrière

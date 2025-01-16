@@ -5,6 +5,7 @@
 // Programme principal
 int main() {
     bool EnableRobot2Movement=true;
+    
     newEnd();
     InitializeRobots();
     InitWindow(screenWidth, screenHeight, "Labyrinthe en C");
@@ -12,13 +13,11 @@ int main() {
 
     srand(time(NULL)); // Initialisation du générateur de nombres aléatoires
     InitMaze();
+    
     GenerateMaze(0, 0); // Génération du labyrinthe depuis le coin haut-gauche
     resetCell(true);
-
+    InitBomb();
     
-
-    
-
     while (!WindowShouldClose()) {
         // Maze[startX][startY].color = GREEN; // Départ
         // Maze[endX][endY].color = RED;     // Arrivée
@@ -82,9 +81,10 @@ int main() {
          if(IsKeyPressed(KEY_C)){ 
             resetCell(true);
          }
-         if(IsKeyPressed(KEY_SPACE)){ 
-            AnimPath();
+         if(IsKeyPressed(KEY_S)){ 
+            SkipBomb = !SkipBomb; 
          }
+         
 
         // Mise à jour du texte affiché
         snprintf(timeText, sizeof(timeText), "Time: %.5f seconds", cpu_time_used);
