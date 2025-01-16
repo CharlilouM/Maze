@@ -19,20 +19,19 @@ void reset_robot(){
 
 int move_robot1() {
     if (!robot1.path) {
-        printf("Calcul du chemin...\n");
+        printf("Calcul du chemin 1...\n");
         robot1.aimX = robot2.x;
         robot1.aimY = robot2.y;
-        robot1.path = SolveMazeDFS(robot1.x, robot1.y, robot1.aimX, robot1.aimY);
+        robot1.path = SolveMazeDFS(robot1.x, robot1.y, robot1.aimX, robot1.aimY,BLUE);
         PrintPath(robot1.path);
         robot1.start_move = clock();
         return 2;
     }
     else {
-         printf("Déplacement en cours");
         // Vérifie si l'intervalle de temps est écoulé
         if ((float)(clock() - robot1.start_move) / CLOCKS_PER_SEC >= time_interval) {
             if(robot1.x == robot1.aimX && robot1.y == robot1.aimY){
-                 printf("Le robot a atteint sa destination.\n");
+                 printf("Le robot1 a atteint sa destination.\n");
                  robot1.path=NULL;
                  return 0;
             }
@@ -60,7 +59,7 @@ int move_robot2() {
     if (!robot2.path) {
         robot2.aimX = aimX;
         robot2.aimY = aimY;
-        robot2.path = SolveMazeDFS(robot2.x, robot2.y, robot2.aimX, robot2.aimY);
+        robot2.path = SolveMazeDFS(robot2.x, robot2.y, robot2.aimX, robot2.aimY,BROWN);
         PrintPath(robot2.path);
         robot2.start_move = clock();
         return 2;
@@ -69,11 +68,8 @@ int move_robot2() {
         // Vérifie si l'intervalle de temps est écoulé
         if ((float)(clock() - robot2.start_move) / CLOCKS_PER_SEC >= time_interval) {
             // Mettre à jour la position
-            if(robot2.x == robot2.aimX && robot2.y == robot2.aimY){
-                 printf("Le robot a atteint sa destination.\n");
-                 robot2.path=NULL;
-                 robot2.aimX = rand() % (WIDTH - 1);
-                 robot2.aimY = rand() % (HEIGHT - 1);
+            if(robot2.x == robot2.aimX && robot2.y == robot2.aimY && robot2.path!=NULL){
+                 printf("Le robot2 a atteint sa destination.\n");
                  return 0;
             }
             robot2.x = robot2.path->x;

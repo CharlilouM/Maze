@@ -85,8 +85,8 @@ void resetCell(){
                     }
     }
     
-    Maze[startX][startY].color = GREEN; // Départ
-    Maze[endX][endY].color = RED;     // Arrivée
+    //Maze[startX][startY].color = GREEN; // Départ
+    //Maze[endX][endY].color = RED;     // Arrivée
 }
 // Fonction pour dessiner le labyrinthe
 void DrawMaze(int cellSize, int offset) {
@@ -105,6 +105,8 @@ void DrawMaze(int cellSize, int offset) {
     }
     DrawCircle(robot1.x * cellSize + offset +cellSize/2,robot1.y* cellSize + offset+cellSize/2,cellSize*0.35,robot1.color);
     DrawCircle(robot2.x * cellSize + offset+cellSize/2,robot2.y* cellSize + offset+cellSize/2,cellSize*0.35,robot2.color);
+    Maze[robot1.aimX][robot1.aimY].color = PURPLE;
+    Maze[robot2.aimX][robot2.aimY].color = RED;
 }
 
 

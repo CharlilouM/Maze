@@ -30,7 +30,7 @@ typedef struct Queue {
 void enqueue(Queue **queue, int x, int y) ;
 Queue* dequeue(Queue **queue) ;
 
-PathList* SolveMazeDFS(int x, int y, int endX, int endY) ;
+PathList* SolveMazeDFS(int x, int y, int endX, int endY,Color color) ;
 int SolveMazeBFS(int startX, int startY, int endX, int endY) ;
 int Heuristic(int x1, int y1, int x2, int y2) ;
 Node* FindLowestFCost(Node *openList[], int openCount) ;

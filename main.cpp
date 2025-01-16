@@ -20,8 +20,8 @@ int main() {
     
 
     while (!WindowShouldClose()) {
-        Maze[startX][startY].color = GREEN; // Départ
-        Maze[endX][endY].color = RED;     // Arrivée
+        // Maze[startX][startY].color = GREEN; // Départ
+        // Maze[endX][endY].color = RED;     // Arrivée
         
         BeginDrawing();
         ClearBackground(RAYWHITE);
@@ -34,7 +34,7 @@ int main() {
             pathLength=1;
             pathList = NULL;
             start = clock();
-            PathList* path = SolveMazeDFS(startX, startY, endX, endY);
+            PathList* path = SolveMazeDFS(startX, startY, endX, endY,BLUE);
             PrintPath(path);
             end = clock();
             cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;

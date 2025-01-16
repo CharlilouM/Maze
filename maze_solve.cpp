@@ -11,12 +11,12 @@ PathList* pathList=NULL;
 
 
 
-PathList* SolveMazeDFS(int x, int y, int endX, int endY) {
+PathList* SolveMazeDFS(int x, int y, int endX, int endY,Color color) {
     // Vérifie si nous avons atteint la cellule d'arrivée
     if (x == endX && y == endY) {
         PathList* path = NULL;
         AddToPathList(&path, x, y); // Ajouter la cellule finale au chemin
-        Maze[x][y].color = BLUE;   // Colorie le chemin trouvé
+        Maze[x][y].color = color;   // Colorie le chemin trouvé
         return path;               // Retourne le chemin
     }
 
@@ -27,34 +27,34 @@ PathList* SolveMazeDFS(int x, int y, int endX, int endY) {
     PathList* path = NULL;
 
     if (Maze[x][y].N == 0 && !Maze[x][y - 1].visited) { // Nord
-        path = SolveMazeDFS(x, y - 1, endX, endY);
+        path = SolveMazeDFS(x, y - 1, endX, endY,color);
         if (path) {
             AddToPathList(&path, x, y); // Ajouter la cellule actuelle au chemin
-            Maze[x][y].color = BLUE;   // Marquer le chemin
+            Maze[x][y].color = color;   // Marquer le chemin
             return path;
         }
     }
     if (Maze[x][y].S == 0 && !Maze[x][y + 1].visited) { // Sud
-        path = SolveMazeDFS(x, y + 1, endX, endY);
+        path = SolveMazeDFS(x, y + 1, endX, endY,color);
         if (path) {
             AddToPathList(&path, x, y);
-            Maze[x][y].color = BLUE;
+            Maze[x][y].color = color;
             return path;
         }
     }
     if (Maze[x][y].E == 0 && !Maze[x + 1][y].visited) { // Est
-        path = SolveMazeDFS(x + 1, y, endX, endY);
+        path = SolveMazeDFS(x + 1, y, endX, endY,color);
         if (path) {
             AddToPathList(&path, x, y);
-            Maze[x][y].color = BLUE;
+            Maze[x][y].color = color;
             return path;
         }
     }
     if (Maze[x][y].W == 0 && !Maze[x - 1][y].visited) { // Ouest
-        path = SolveMazeDFS(x - 1, y, endX, endY);
+        path = SolveMazeDFS(x - 1, y, endX, endY,color);
         if (path) {
             AddToPathList(&path, x, y);
-            Maze[x][y].color = BLUE;
+            Maze[x][y].color = color;
             return path;
         }
     }
