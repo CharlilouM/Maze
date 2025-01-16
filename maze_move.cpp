@@ -10,7 +10,7 @@ int aimX = rand() % (WIDTH - 1);
 int aimY = rand() % (HEIGHT - 1);
 
 void InitializeRobots() {
-    robot1 = (Robot){startX, startY, 0, 0, YELLOW, NULL,0};
+    robot1 = (Robot){startX, startY, 0, 0, YELLOW, NULL,clock()};
     robot2 = (Robot){endX, endY, 0, 0, ORANGE, NULL,0};
 }
 void reset_robot(){
@@ -18,15 +18,15 @@ void reset_robot(){
 }
 
 int move_robot1() {
-    if (!robot1.path) {
+   if (!robot1.path || (robot1.x == robot1.aimX && robot1.y == robot1.aimY)) {
         printf("Calcul du chemin 1...\n");
         resetCell(true);
         robot1.aimX = robot2.x;
         robot1.aimY = robot2.y;
         robot1.path = SolveMazeDFS(robot1.x, robot1.y, robot1.aimX, robot1.aimY,BLUE);
-        PrintPath(robot1.path);
-        robot1.start_move = clock();
-        return 2;
+        //PrintPath(robot1.path);
+        
+        
     }
     else {
         // Vérifie si l'intervalle de temps est écoulé
