@@ -20,6 +20,7 @@ void reset_robot(){
 int move_robot1() {
     if (!robot1.path) {
         printf("Calcul du chemin 1...\n");
+        resetCell(false);
         robot1.aimX = robot2.x;
         robot1.aimY = robot2.y;
         robot1.path = SolveMazeDFS(robot1.x, robot1.y, robot1.aimX, robot1.aimY,BLUE);
@@ -57,6 +58,7 @@ int move_robot1() {
 
 int move_robot2() {
     if (!robot2.path) {
+        resetCell(false);
         robot2.aimX = aimX;
         robot2.aimY = aimY;
         robot2.path = SolveMazeDFS(robot2.x, robot2.y, robot2.aimX, robot2.aimY,BROWN);

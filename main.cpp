@@ -13,7 +13,7 @@ int main() {
     srand(time(NULL)); // Initialisation du générateur de nombres aléatoires
     InitMaze();
     GenerateMaze(0, 0); // Génération du labyrinthe depuis le coin haut-gauche
-    resetCell();
+    resetCell(true);
 
     
 
@@ -30,7 +30,7 @@ int main() {
         EndDrawing()
         ;
         if (IsKeyPressed(KEY_ONE)){
-            resetCell();
+            resetCell(true);
             pathLength=1;
             pathList = NULL;
             start = clock();
@@ -41,7 +41,7 @@ int main() {
             }
            
         if (IsKeyPressed(KEY_TWO)){
-            resetCell();
+            resetCell(true);
             pathLength=0;
             pathList = NULL;
             start = clock();
@@ -56,7 +56,7 @@ int main() {
         if (IsKeyPressed(KEY_THREE)){
             pathLength=1;
             pathList = NULL;
-            resetCell();
+            resetCell(true);
             start = clock();
             if (SolveMazeAStar(startX, startY, endX, endY)) {
                 printf("Solution trouvée !\n");
@@ -77,10 +77,10 @@ int main() {
 
          if(IsKeyPressed(KEY_R)){
             newEnd();
-            resetCell();
+            resetCell(true);
          }
          if(IsKeyPressed(KEY_C)){ 
-            resetCell();
+            resetCell(true);
          }
          if(IsKeyPressed(KEY_SPACE)){ 
             AnimPath();

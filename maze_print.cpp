@@ -77,12 +77,12 @@ void GenerateMaze(int x, int y) {
         }
     }
 }
-void resetCell(){
+void resetCell(bool color){
     for (int i = 0; i < WIDTH; i++) {
         for (int j = 0; j < HEIGHT; j++) {
             Maze[i][j].visited=0;
-            Maze[i][j].color=WHITE;
-                    }
+            if (color) Maze[i][j].color=WHITE;
+            }
     }
     
     //Maze[startX][startY].color = GREEN; // Départ

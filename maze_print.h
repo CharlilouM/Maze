@@ -39,7 +39,7 @@ void InitMaze();
 void ShuffleDirections(int dir[4][2]);
 void GenerateMaze(int x, int y);
 void DrawMaze(int cellSize, int offset);
-void resetCell();
+void resetCell(bool color);
 void newEnd();
 void DrawTextBelowMaze();
 void AnimPath();;
