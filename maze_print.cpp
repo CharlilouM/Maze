@@ -115,13 +115,14 @@ void DrawTextBelowMaze() {
 
     // Dessiner le texte
     DrawText("A : Active mouvement", textX, textY, textSize, BLACK);
-    DrawText("R : Refresh end", textX, textY+20, textSize, BLACK);
-    DrawText("1 : DFS", textX, textY+40, textSize, BLACK);
-    DrawText("2 : BFS", textX, textY+60, textSize, BLACK);
-    DrawText("3 : A*", textX, textY+80, textSize, BLACK);
-    DrawText(TextFormat("Start : %d;%d | End %d;%d",startX,startY,endX,endY), textX, textY+100, textSize, BLACK);
-    DrawText(timeText, textX, textY+120, textSize, BLACK);
-    DrawText( pathLengthText, textX, textY+140, textSize, BLACK);
+    DrawText("C : Clean path", textX, textY+20, textSize, BLACK);
+    DrawText("R : Refresh end", textX, textY+40, textSize, BLACK);
+    DrawText("1 : DFS", textX, textY+60, textSize, BLACK);
+    DrawText("2 : BFS", textX, textY+80, textSize, BLACK);
+    DrawText("3 : A*", textX, textY+100, textSize, BLACK);
+    DrawText(TextFormat("Start : %d;%d | End %d;%d",startX,startY,endX,endY), textX, textY+120, textSize, BLACK);
+    DrawText(timeText, textX, textY+140, textSize, BLACK);
+    DrawText( pathLengthText, textX, textY+160, textSize, BLACK);
 }
 void newEnd(){
     Maze[endX][endY].color=WHITE;
@@ -130,5 +131,10 @@ void newEnd(){
     Maze[endX][endY].color=RED;
 }
 void move(){
+    
+}
+
+void AnimPath(){
+    // déplacer le carré bleu tout les X temps selon le Path
     
 }

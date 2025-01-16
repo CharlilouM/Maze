@@ -31,9 +31,11 @@ int main() {
         if (IsKeyPressed(KEY_ONE)){
             resetCell();
             pathLength=1;
+            pathList = NULL;
             start = clock();
             if (SolveMazeDFS(startX, startY, endX, endY)) {
                 printf("Solution trouvée !\n");
+                PrintPath(pathList);
                 
             } else {
                 printf("Aucune solution n'existe !\n");
@@ -44,6 +46,8 @@ int main() {
            
         if (IsKeyPressed(KEY_TWO)){
             resetCell();
+            pathLength=0;
+            pathList = NULL;
             start = clock();
             if (SolveMazeAStar(startX, startY, endX, endY)) {
                 printf("Solution trouvée !\n");
@@ -54,6 +58,8 @@ int main() {
             cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
             }
         if (IsKeyPressed(KEY_THREE)){
+            pathLength=1;
+            pathList = NULL;
             resetCell();
             start = clock();
             if (SolveMazeAStar(startX, startY, endX, endY)) {
@@ -65,7 +71,7 @@ int main() {
             cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
             } 
          if (IsKeyPressed(KEY_A)){
-            mouvement!=mouvement;
+            mouvement = !mouvement;
             if (mouvement){
                 move();
             }
@@ -75,6 +81,12 @@ int main() {
          if(IsKeyPressed(KEY_R)){
             newEnd();
             resetCell();
+         }
+         if(IsKeyPressed(KEY_C)){ 
+            resetCell();
+         }
+         if(IsKeyPressed(KEY_SPACE)){ 
+            AnimPath();
          }
 
         // Mise à jour du texte affiché

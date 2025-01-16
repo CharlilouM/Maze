@@ -20,7 +20,7 @@ typedef struct PathList {
     int x, y;
     struct PathList* next;
 } PathList;
-
+extern PathList* pathList;
 
 typedef struct Queue {
     int x, y;

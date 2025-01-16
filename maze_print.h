@@ -41,6 +41,7 @@ void DrawMaze(int cellSize, int offset);
 void resetCell();
 void newEnd();
 void DrawTextBelowMaze();
+void AnimPath();;
 
 
 

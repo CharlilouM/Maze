@@ -8,7 +8,7 @@ double cpu_time_used;
 char timeText[50];
 char pathLengthText[50];
 
-PathList* pathList = NULL;
+PathList* pathList=NULL;
 
 
 
@@ -16,17 +16,18 @@ int SolveMazeDFS(int x, int y, int endX, int endY) {
     // Vérifie si nous avons atteint la cellule d'arrivée
     if (x == endX && y == endY) {
         //Maze[x][y].color = BLUE; // Colorie le chemin trouvé
+        AddToPathList(&pathList, x, y);
         return 1; // Solution trouvée
     }
 
     // Marquer la cellule comme visitée
     Maze[x][y].visited = 1;
-    Maze[x][y].color = YELLOW; // Marque la cellule sur le chemin en exploration
 
     // Explorer les directions : Nord, Sud, Est, Ouest
     if (Maze[x][y].N == 0 && !Maze[x][y - 1].visited) { // Nord
         if (SolveMazeDFS(x, y - 1, endX, endY)) {
             Maze[x][y].color = BLUE; // Marquer le chemin
+            AddToPathList(&pathList, x, y);
             pathLength++;
             return 1;
         }
@@ -34,6 +35,7 @@ int SolveMazeDFS(int x, int y, int endX, int endY) {
     if (Maze[x][y].S == 0 && !Maze[x][y + 1].visited) { // Sud
         if (SolveMazeDFS(x, y + 1, endX, endY)) {
             Maze[x][y].color = BLUE;
+            AddToPathList(&pathList, x, y);
             pathLength++;
             return 1;
         }
@@ -41,6 +43,7 @@ int SolveMazeDFS(int x, int y, int endX, int endY) {
     if (Maze[x][y].E == 0 && !Maze[x + 1][y].visited) { // Est
         if (SolveMazeDFS(x + 1, y, endX, endY)) {
             Maze[x][y].color = BLUE;
+            AddToPathList(&pathList, x, y);
             pathLength++;
             return 1;
         }
@@ -48,6 +51,7 @@ int SolveMazeDFS(int x, int y, int endX, int endY) {
     if (Maze[x][y].W == 0 && !Maze[x - 1][y].visited) { // Ouest
         if (SolveMazeDFS(x - 1, y, endX, endY)) {
             Maze[x][y].color = BLUE;
+            AddToPathList(&pathList, x, y);
             pathLength++;
             return 1;
         }
