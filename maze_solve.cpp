@@ -11,54 +11,57 @@ PathList* pathList=NULL;
 
 
 
-int SolveMazeDFS(int x, int y, int endX, int endY) {
+PathList* SolveMazeDFS(int x, int y, int endX, int endY) {
     // Vérifie si nous avons atteint la cellule d'arrivée
     if (x == endX && y == endY) {
-        //Maze[x][y].color = BLUE; // Colorie le chemin trouvé
-        AddToPathList(&pathList, x, y);
-        return 1; // Solution trouvée
+        PathList* path = NULL;
+        AddToPathList(&path, x, y); // Ajouter la cellule finale au chemin
+        Maze[x][y].color = BLUE;   // Colorie le chemin trouvé
+        return path;               // Retourne le chemin
     }
 
     // Marquer la cellule comme visitée
     Maze[x][y].visited = 1;
 
     // Explorer les directions : Nord, Sud, Est, Ouest
+    PathList* path = NULL;
+
     if (Maze[x][y].N == 0 && !Maze[x][y - 1].visited) { // Nord
-        if (SolveMazeDFS(x, y - 1, endX, endY)) {
-            Maze[x][y].color = BLUE; // Marquer le chemin
-            AddToPathList(&pathList, x, y);
-            pathLength++;
-            return 1;
+        path = SolveMazeDFS(x, y - 1, endX, endY);
+        if (path) {
+            AddToPathList(&path, x, y); // Ajouter la cellule actuelle au chemin
+            Maze[x][y].color = BLUE;   // Marquer le chemin
+            return path;
         }
     }
     if (Maze[x][y].S == 0 && !Maze[x][y + 1].visited) { // Sud
-        if (SolveMazeDFS(x, y + 1, endX, endY)) {
+        path = SolveMazeDFS(x, y + 1, endX, endY);
+        if (path) {
+            AddToPathList(&path, x, y);
             Maze[x][y].color = BLUE;
-            AddToPathList(&pathList, x, y);
-            pathLength++;
-            return 1;
+            return path;
         }
     }
     if (Maze[x][y].E == 0 && !Maze[x + 1][y].visited) { // Est
-        if (SolveMazeDFS(x + 1, y, endX, endY)) {
+        path = SolveMazeDFS(x + 1, y, endX, endY);
+        if (path) {
+            AddToPathList(&path, x, y);
             Maze[x][y].color = BLUE;
-            AddToPathList(&pathList, x, y);
-            pathLength++;
-            return 1;
+            return path;
         }
     }
     if (Maze[x][y].W == 0 && !Maze[x - 1][y].visited) { // Ouest
-        if (SolveMazeDFS(x - 1, y, endX, endY)) {
+        path = SolveMazeDFS(x - 1, y, endX, endY);
+        if (path) {
+            AddToPathList(&path, x, y);
             Maze[x][y].color = BLUE;
-            AddToPathList(&pathList, x, y);
-            pathLength++;
-            return 1;
+            return path;
         }
     }
 
     // Si aucune direction n'aboutit, on revient en arrière
-    Maze[x][y].color = GRAY; // Marque comme "cul-de-sac"
-    return 0;
+    Maze[x][y].visited = 0; // Défaire la visite pour permettre d'autres chemins
+    return NULL;            // Aucun chemin trouvé
 }
 
 

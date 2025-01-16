@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "maze_move.h"
 
 #define WIDTH 20
 #define HEIGHT 20

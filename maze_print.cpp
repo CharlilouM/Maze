@@ -103,6 +103,8 @@ void DrawMaze(int cellSize, int offset) {
             if (cell.W) DrawRectangle(x, y, wall, cellSize, BLACK);
         }
     }
+    DrawCircle(robot1.x * cellSize + offset +cellSize/2,robot1.y* cellSize + offset+cellSize/2,cellSize*0.35,robot1.color);
+    DrawCircle(robot2.x * cellSize + offset+cellSize/2,robot2.y* cellSize + offset+cellSize/2,cellSize*0.35,robot2.color);
 }
 
 

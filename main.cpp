@@ -4,9 +4,9 @@
 
 // Programme principal
 int main() {
-    
+    bool EnableRobot2Movement=true;
     newEnd();
-
+    InitializeRobots();
     InitWindow(screenWidth, screenHeight, "Labyrinthe en C");
     SetTargetFPS(60);
 
@@ -34,13 +34,8 @@ int main() {
             pathLength=1;
             pathList = NULL;
             start = clock();
-            if (SolveMazeDFS(startX, startY, endX, endY)) {
-                printf("Solution trouvée !\n");
-                PrintPath(pathList);
-                
-            } else {
-                printf("Aucune solution n'existe !\n");
-            }
+            PathList* path = SolveMazeDFS(startX, startY, endX, endY);
+            PrintPath(path);
             end = clock();
             cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
             }
@@ -72,12 +67,13 @@ int main() {
             cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
             } 
          if (IsKeyPressed(KEY_E)){
-            mouvement = !mouvement;
-            if (mouvement){
-                move();//active mouvement de la cible
-            }
+            mouvement = !mouvement; 
          }
-            
+        if (mouvement){
+            move_robot1();//active mouvement de la cible
+            if (EnableRobot2Movement)  move_robot2();
+        }
+        else reset_robot();
 
          if(IsKeyPressed(KEY_R)){
             newEnd();
