@@ -137,7 +137,7 @@ void DrawTextBelowMaze() {
     DrawText(TextFormat("Start : %d;%d | End %d;%d",startX,startY,endX,endY), textX, textY+120, textSize, BLACK);
     DrawText(timeText, textX, textY+140, textSize, BLACK);
     DrawText( pathLengthText, textX, textY+160, textSize, BLACK);
-    DrawText(TextFormat("Skip Bomb : %d",(bool)SkipBomb), textX, textY+180, textSize, BLACK);
+    DrawText(TextFormat("S : Skip Bomb = %d",(bool)SkipBomb), textX, textY+180, textSize, BLACK);
 }
 void newEnd(){
     Maze[endX][endY].color=WHITE;
